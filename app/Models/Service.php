@@ -9,7 +9,7 @@ class Service extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'users_id'];
+    protected $fillable = ['name'];
 
     // Relation avec les utilisateurs
     public function users() {

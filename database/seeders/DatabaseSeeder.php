@@ -34,6 +34,6 @@ class DatabaseSeeder extends Seeder
         \App\Models\Category::factory(5)->create();
         \App\Models\BonCommande::factory(10)->create();
         \App\Models\Materiel::factory(50)->create();
-        \App\Models\AffectationMateriel::factory(30)->create();
+        \App\Models\Affectation::factory(30)->create();
     }
 }

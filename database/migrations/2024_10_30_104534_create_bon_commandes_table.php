@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('bon_commandes', function (Blueprint $table) {
             $table->id();
             $table->string('ref');  // Référence du bon de commande
-            $table->foreignId('categorie_bdc_id')->constrained('categories_bdc')->onDelete('cascade');
+            $table->foreignId('categorie_bdc_id')->constrained('category_bdcs');
             $table->dateTime('date');  // Ajout du champ date
             $table->timestamps();
         });

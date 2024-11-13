@@ -21,7 +21,6 @@ class ServiceFactory extends Factory
     {
         return [
             'name' => $this->faker->company(),
-            'users_id' => \App\Models\User::factory(),
             'created_at' => now(),
             'updated_at' => now(),
         ];
