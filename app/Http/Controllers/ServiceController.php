@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Service;
 use App\Http\Requests\StoreServiceRequest;
 use App\Http\Requests\UpdateServiceRequest;
+use Illuminate\Http\Request;
+use App\Http\Resources\ServiceResource;
+use Illuminate\Http\Response;
+use Illuminate\Support\Str;
 
 class ServiceController extends Controller
 {
@@ -15,7 +19,13 @@ class ServiceController extends Controller
      */
     public function index()
     {
-        //
+        $services = Service::orderBy('id', 'desc')->get();
+        $totalServices = Service::count();
+
+        return response()->json([
+            'data' => ServiceResource::collection($services),
+            'total' => $totalServices
+        ]);
     }
 
     /**

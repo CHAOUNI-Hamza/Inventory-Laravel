@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\ServiceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,3 +34,9 @@ Route::group([
     Route::post('me', [AuthController::class, 'me']);
 
 });
+
+
+Route::apiResource('users', UserController::class);
+Route::put('users/{user}/password', [UserController::class, 'updatePassword']);
+
+Route::apiResource('services', ServiceController::class);
