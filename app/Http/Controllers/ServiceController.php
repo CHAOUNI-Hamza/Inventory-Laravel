@@ -29,16 +29,6 @@ class ServiceController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\StoreServiceRequest  $request
@@ -46,7 +36,13 @@ class ServiceController extends Controller
      */
     public function store(StoreServiceRequest $request)
     {
-        //
+        $service = new Service();
+
+        $service->name = $request->input('name');
+
+        $service->save();
+
+        return new ServiceResource($service);
     }
 
     /**
@@ -57,18 +53,7 @@ class ServiceController extends Controller
      */
     public function show(Service $service)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Service  $service
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Service $service)
-    {
-        //
+        return new ServiceResource($service);
     }
 
     /**
@@ -80,7 +65,10 @@ class ServiceController extends Controller
      */
     public function update(UpdateServiceRequest $request, Service $service)
     {
-        //
+        $service->name = $request->input('name');
+        $service->save();
+
+        return new ServiceResource($service);
     }
 
     /**
@@ -91,6 +79,7 @@ class ServiceController extends Controller
      */
     public function destroy(Service $service)
     {
-        //
+        $service->delete();
+        return response()->noContent();
     }
 }

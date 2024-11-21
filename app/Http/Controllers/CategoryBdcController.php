@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\CategoryBdc;
 use App\Http\Requests\StoreCategoryBdcRequest;
 use App\Http\Requests\UpdateCategoryBdcRequest;
+use Illuminate\Http\Request;
+use App\Http\Resources\CategoryBdcResource;
+use Illuminate\Http\Response;
+use Illuminate\Support\Str;
 
 class CategoryBdcController extends Controller
 {
@@ -15,17 +19,13 @@ class CategoryBdcController extends Controller
      */
     public function index()
     {
-        //
-    }
+        $categoryBdcs = CategoryBdc::orderBy('id', 'desc')->get();
+        $totalcategoryBdcs = CategoryBdc::count();
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return response()->json([
+            'data' => CategoryBdcResource::collection($categoryBdcs),
+            'total' => $totalcategoryBdcs
+        ]);
     }
 
     /**
@@ -36,7 +36,13 @@ class CategoryBdcController extends Controller
      */
     public function store(StoreCategoryBdcRequest $request)
     {
-        //
+        $categoryBdc = new CategoryBdc();
+
+        $categoryBdc->name = $request->input('name');
+
+        $categoryBdc->save();
+
+        return new CategoryBdcResource($categoryBdc);
     }
 
     /**
@@ -47,18 +53,7 @@ class CategoryBdcController extends Controller
      */
     public function show(CategoryBdc $categoryBdc)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\CategoryBdc  $categoryBdc
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(CategoryBdc $categoryBdc)
-    {
-        //
+        return new CategoryBdcResource($categoryBdc);
     }
 
     /**
@@ -70,7 +65,10 @@ class CategoryBdcController extends Controller
      */
     public function update(UpdateCategoryBdcRequest $request, CategoryBdc $categoryBdc)
     {
-        //
+        $categoryBdc->name = $request->input('name');
+        $categoryBdc->save();
+
+        return new CategoryBdcResource($categoryBdc);
     }
 
     /**
@@ -81,6 +79,7 @@ class CategoryBdcController extends Controller
      */
     public function destroy(CategoryBdc $categoryBdc)
     {
-        //
+        $categoryBdc->delete();
+        return response()->noContent();
     }
 }

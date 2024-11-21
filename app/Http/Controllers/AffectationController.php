@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Affectation;
 use App\Http\Requests\StoreAffectationRequest;
 use App\Http\Requests\UpdateAffectationRequest;
+use App\Http\Resources\AffectationResource;
 
 class AffectationController extends Controller
 {
@@ -15,17 +16,13 @@ class AffectationController extends Controller
      */
     public function index()
     {
-        //
-    }
+        $affectations = Affectation::orderBy('id', 'desc')->get();
+        $totalAffectations = Affectation::count();
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return response()->json([
+            'data' => AffectationResource::collection($affectations),
+            'total' => $totalAffectations
+        ]);
     }
 
     /**
@@ -36,7 +33,17 @@ class AffectationController extends Controller
      */
     public function store(StoreAffectationRequest $request)
     {
-        //
+        $affectation = new Affectation();
+
+        $affectation->materiel_id = $request->input('materiel_id');
+        $affectation->service_id = $request->input('service_id');
+        $affectation->assigned_by = $request->input('assigned_by');
+        $affectation->quantity = bcrypt($request->input('quantity'));
+        $affectation->date = $request->input('date');
+
+        $affectation->save();
+
+        return new AffectationResource($affectation);
     }
 
     /**
@@ -47,18 +54,7 @@ class AffectationController extends Controller
      */
     public function show(Affectation $affectation)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Affectation  $affectation
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Affectation $affectation)
-    {
-        //
+        return new AffectationResource($affectation);
     }
 
     /**
@@ -70,7 +66,16 @@ class AffectationController extends Controller
      */
     public function update(UpdateAffectationRequest $request, Affectation $affectation)
     {
-        //
+
+        $affectation->materiel_id = $request->input('materiel_id');
+        $affectation->service_id = $request->input('service_id');
+        $affectation->assigned_by = $request->input('assigned_by');
+        $affectation->quantity = bcrypt($request->input('quantity'));
+        $affectation->date = $request->input('date');
+
+        $affectation->save();
+
+        return new AffectationResource($affectation);
     }
 
     /**
@@ -81,6 +86,7 @@ class AffectationController extends Controller
      */
     public function destroy(Affectation $affectation)
     {
-        //
+        $affectation->delete();
+        return response()->noContent();
     }
 }

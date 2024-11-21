@@ -46,7 +46,7 @@ class UserController extends Controller
     }
 
     public function update(UpdateUserRequest $request, User $user)
-    {        
+    {
         $user->first_name = $request->input('first_name');
         $user->last_name = $request->input('last_name');
         $user->email = $request->input('email');

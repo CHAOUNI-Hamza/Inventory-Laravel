@@ -5,6 +5,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\BonCommandeController;
+use App\Http\Controllers\CategoryBdcController;
+use App\Http\Controllers\AffectationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,3 +43,6 @@ Route::apiResource('users', UserController::class);
 Route::put('users/{user}/password', [UserController::class, 'updatePassword']);
 
 Route::apiResource('services', ServiceController::class);
+Route::apiResource('commandes', BonCommandeController::class);
+Route::apiResource('categories', CategoryBdcController::class);
+Route::apiResource('affectations', AffectationController::class);
