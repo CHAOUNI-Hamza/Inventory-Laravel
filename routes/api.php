@@ -8,6 +8,8 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\BonCommandeController;
 use App\Http\Controllers\CategoryBdcController;
 use App\Http\Controllers\AffectationController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\MaterielController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,5 +46,7 @@ Route::put('users/{user}/password', [UserController::class, 'updatePassword']);
 
 Route::apiResource('services', ServiceController::class);
 Route::apiResource('commandes', BonCommandeController::class);
-Route::apiResource('categories', CategoryBdcController::class);
+Route::apiResource('categoriesbdc', CategoryBdcController::class);
+Route::apiResource('categories', CategoryController::class);
 Route::apiResource('affectations', AffectationController::class);
+Route::apiResource('materiels', MaterielController::class);

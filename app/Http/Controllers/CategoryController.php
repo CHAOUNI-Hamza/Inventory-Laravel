@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
+use Illuminate\Http\Request;
+use App\Http\Resources\CategoryResource;
+use Illuminate\Http\Response;
+use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
@@ -15,17 +19,13 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
-    }
+        $categories = Category::orderBy('id', 'desc')->get();
+        $totalcategories = Category::count();
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return response()->json([
+            'data' => CategoryResource::collection($categories),
+            'total' => $totalcategories
+        ]);
     }
 
     /**
@@ -36,7 +36,13 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
-        //
+        $categorie = new Category();
+
+        $categorie->name = $request->input('name');
+
+        $categorie->save();
+
+        return new CategoryResource($categorie);
     }
 
     /**
@@ -47,18 +53,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Category  $category
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Category $category)
-    {
-        //
+        return new CategoryResource($category);
     }
 
     /**
@@ -70,7 +65,10 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request, Category $category)
     {
-        //
+        $category->name = $request->input('name');
+        $category->save();
+
+        return new CategoryResource($category);
     }
 
     /**
@@ -81,6 +79,7 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        $category->delete();
+        return response()->noContent();
     }
 }

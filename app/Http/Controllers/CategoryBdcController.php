@@ -19,12 +19,12 @@ class CategoryBdcController extends Controller
      */
     public function index()
     {
-        $categoryBdcs = CategoryBdc::orderBy('id', 'desc')->get();
+        $categoriesbdc = CategoryBdc::orderBy('id', 'desc')->get();
         $totalcategoryBdcs = CategoryBdc::count();
 
         return response()->json([
-            'data' => CategoryBdcResource::collection($categoryBdcs),
-            'total' => $totalcategoryBdcs
+            'data' => CategoryBdcResource::collection($categoriesbdc),
+            'total' => $totalcategoriesbdc
         ]);
     }
 
@@ -51,9 +51,9 @@ class CategoryBdcController extends Controller
      * @param  \App\Models\CategoryBdc  $categoryBdc
      * @return \Illuminate\Http\Response
      */
-    public function show(CategoryBdc $categoryBdc)
+    public function show(CategoryBdc $categoriesbdc)
     {
-        return new CategoryBdcResource($categoryBdc);
+        return new CategoryBdcResource($categoriesbdc);
     }
 
     /**
@@ -63,12 +63,12 @@ class CategoryBdcController extends Controller
      * @param  \App\Models\CategoryBdc  $categoryBdc
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateCategoryBdcRequest $request, CategoryBdc $categoryBdc)
+    public function update(UpdateCategoryBdcRequest $request, CategoryBdc $categoriesbdc)
     {
-        $categoryBdc->name = $request->input('name');
-        $categoryBdc->save();
+        $categoriesbdc->name = $request->input('name');
+        $categoriesbdc->save();
 
-        return new CategoryBdcResource($categoryBdc);
+        return new CategoryBdcResource($categoriesbdc);
     }
 
     /**
@@ -77,9 +77,9 @@ class CategoryBdcController extends Controller
      * @param  \App\Models\CategoryBdc  $categoryBdc
      * @return \Illuminate\Http\Response
      */
-    public function destroy(CategoryBdc $categoryBdc)
+    public function destroy(CategoryBdc $categoriesbdc)
     {
-        $categoryBdc->delete();
+        $categoriesbdc->delete();
         return response()->noContent();
     }
 }

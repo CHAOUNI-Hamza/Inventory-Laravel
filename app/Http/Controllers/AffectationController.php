@@ -38,7 +38,7 @@ class AffectationController extends Controller
         $affectation->materiel_id = $request->input('materiel_id');
         $affectation->service_id = $request->input('service_id');
         $affectation->assigned_by = $request->input('assigned_by');
-        $affectation->quantity = bcrypt($request->input('quantity'));
+        $affectation->quantity = $request->input('quantity');
         $affectation->date = $request->input('date');
 
         $affectation->save();
@@ -70,7 +70,7 @@ class AffectationController extends Controller
         $affectation->materiel_id = $request->input('materiel_id');
         $affectation->service_id = $request->input('service_id');
         $affectation->assigned_by = $request->input('assigned_by');
-        $affectation->quantity = bcrypt($request->input('quantity'));
+        $affectation->quantity = $request->input('quantity');
         $affectation->date = $request->input('date');
 
         $affectation->save();

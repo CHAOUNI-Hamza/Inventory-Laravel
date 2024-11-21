@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\BonCommande;
 use App\Http\Requests\StoreBonCommandeRequest;
 use App\Http\Requests\UpdateBonCommandeRequest;
+use App\Http\Resources\BonCommandeResource;
 
 class BonCommandeController extends Controller
 {
@@ -15,17 +16,13 @@ class BonCommandeController extends Controller
      */
     public function index()
     {
-        //
-    }
+        $commandes = BonCommande::orderBy('id', 'desc')->get();
+        $totalCommande = BonCommande::count();
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return response()->json([
+            'data' => BonCommandeResource::collection($commandes),
+            'total' => $totalCommande
+        ]);
     }
 
     /**
@@ -36,7 +33,15 @@ class BonCommandeController extends Controller
      */
     public function store(StoreBonCommandeRequest $request)
     {
-        //
+        $commande = new BonCommande();
+
+        $commande->ref = $request->input('ref');
+        $commande->categorie_bdc_id = $request->input('categorie_bdc_id');
+        $commande->date = $request->input('date');
+
+        $commande->save();
+
+        return new BonCommandeResource($commande);
     }
 
     /**
@@ -45,20 +50,9 @@ class BonCommandeController extends Controller
      * @param  \App\Models\BonCommande  $bonCommande
      * @return \Illuminate\Http\Response
      */
-    public function show(BonCommande $bonCommande)
+    public function show(BonCommande $commande)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\BonCommande  $bonCommande
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(BonCommande $bonCommande)
-    {
-        //
+        return new BonCommandeResource($commande);
     }
 
     /**
@@ -68,9 +62,15 @@ class BonCommandeController extends Controller
      * @param  \App\Models\BonCommande  $bonCommande
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateBonCommandeRequest $request, BonCommande $bonCommande)
+    public function update(UpdateBonCommandeRequest $request, BonCommande $commande)
     {
-        //
+        $commande->ref = $request->input('ref');
+        $commande->categorie_bdc_id = $request->input('categorie_bdc_id');
+        $commande->date = $request->input('date');
+
+        $commande->save();
+
+        return new BonCommandeResource($commande);
     }
 
     /**
@@ -79,8 +79,9 @@ class BonCommandeController extends Controller
      * @param  \App\Models\BonCommande  $bonCommande
      * @return \Illuminate\Http\Response
      */
-    public function destroy(BonCommande $bonCommande)
+    public function destroy(BonCommande $commande)
     {
-        //
+        $commande->delete();
+        return response()->noContent();
     }
 }

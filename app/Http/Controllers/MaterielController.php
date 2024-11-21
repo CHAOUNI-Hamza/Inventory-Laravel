@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Materiel;
 use App\Http\Requests\StoreMaterielRequest;
 use App\Http\Requests\UpdateMaterielRequest;
+use App\Http\Requests\UpdateUserPasswordRequest;
+use App\Http\Resources\MaterielResource;
+use Illuminate\Http\Response;
+use Illuminate\Support\Str;
 
 class MaterielController extends Controller
 {
@@ -15,17 +19,13 @@ class MaterielController extends Controller
      */
     public function index()
     {
-        //
-    }
+        $materiels = Materiel::orderBy('id', 'desc')->get();
+        $totalMateriels = Materiel::count();
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return response()->json([
+            'data' => MaterielResource::collection($materiels),
+            'total' => $totalMateriels
+        ]);
     }
 
     /**
@@ -36,7 +36,19 @@ class MaterielController extends Controller
      */
     public function store(StoreMaterielRequest $request)
     {
-        //
+        $materiel = new Materiel();
+
+        $materiel->name = $request->input('name');
+        $materiel->description = $request->input('description');
+        $materiel->quantity = $request->input('quantity');
+        $materiel->category_id = $request->input('category_id');
+        $materiel->bon_commande_id = $request->input('bon_commande_id');
+        $materiel->stock = $request->input('stock');
+        $materiel->num_inventaire = $request->input('num_inventaire');
+
+        $materiel->save();
+
+        return new MaterielResource($materiel);
     }
 
     /**
@@ -47,18 +59,7 @@ class MaterielController extends Controller
      */
     public function show(Materiel $materiel)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Materiel  $materiel
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Materiel $materiel)
-    {
-        //
+        return new MaterielResource($materiel);
     }
 
     /**
@@ -70,7 +71,17 @@ class MaterielController extends Controller
      */
     public function update(UpdateMaterielRequest $request, Materiel $materiel)
     {
-        //
+        $materiel->name = $request->input('name');
+        $materiel->description = $request->input('description');
+        $materiel->quantity = $request->input('quantity');
+        $materiel->category_id = $request->input('category_id');
+        $materiel->bon_commande_id = $request->input('bon_commande_id');
+        $materiel->stock = $request->input('stock');
+        $materiel->num_inventaire = $request->input('num_inventaire');
+
+        $materiel->save();
+
+        return new MaterielResource($materiel);
     }
 
     /**
@@ -81,6 +92,7 @@ class MaterielController extends Controller
      */
     public function destroy(Materiel $materiel)
     {
-        //
+        $materiel->delete();
+        return response()->noContent();
     }
 }
