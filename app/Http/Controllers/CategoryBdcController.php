@@ -24,7 +24,7 @@ class CategoryBdcController extends Controller
 
         return response()->json([
             'data' => CategoryBdcResource::collection($categoriesbdc),
-            'total' => $totalcategoriesbdc
+            'total' => $totalcategoryBdcs
         ]);
     }
 
