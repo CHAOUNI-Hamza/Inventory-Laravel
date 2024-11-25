@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Affectation;
+use Illuminate\Http\Request;
 use App\Http\Requests\StoreAffectationRequest;
 use App\Http\Requests\UpdateAffectationRequest;
 use App\Http\Resources\AffectationResource;
@@ -14,15 +15,43 @@ class AffectationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $affectations = Affectation::orderBy('id', 'desc')->get();
+        $query = Affectation::query();
+
+        if ($request->filled('materiel_id')) {
+            $query->where('materiel_id', $request->input('materiel_id'));
+        }
+
+        if ($request->filled('service_id')) {
+            $query->where('service_id', $request->input('service_id'));
+        }
+
+        if ($request->filled('assigned_by')) {
+            $query->where('assigned_by', $request->input('assigned_by'));
+        }
+
+        if ($request->filled('date')) {
+            $query->whereDate('date', $request->input('date')); // Filtrer par date exacte
+        }
+
+        // Récupérer les données triées
+        $affectations = $query->orderBy('id', 'desc')->get();
+        $totalAffectations = $query->count();
+
+        // Retourner les résultats avec les ressources
+        return response()->json([
+            'data' => AffectationResource::collection($affectations),
+            'total' => $totalAffectations,
+        ]);
+
+        /*$affectations = Affectation::orderBy('id', 'desc')->get();
         $totalAffectations = Affectation::count();
 
         return response()->json([
             'data' => AffectationResource::collection($affectations),
             'total' => $totalAffectations
-        ]);
+        ]);*/
     }
 
     /**

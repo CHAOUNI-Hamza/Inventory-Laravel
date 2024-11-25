@@ -14,6 +14,15 @@ class BonCommandeResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        //return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'ref' => $this->ref,
+            'date' => $this->date,
+            'categorie_bdc_id' => $this->categorie_bdc_id,
+            'categorie_bdc_name' => $this->categorieBdc ? $this->categorieBdc->name : null,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+        ];
     }
 }
