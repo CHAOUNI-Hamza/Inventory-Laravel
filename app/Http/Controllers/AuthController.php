@@ -41,6 +41,17 @@ class AuthController extends Controller
     public function me()
     {
         return response()->json(auth()->user());
+
+        $user = auth()->user();
+        $user->load(['service']);
+        return response()->json([
+            'id' => $user->id,
+            'first_name' => $user->first_name,
+            'last_name' => $user->last_name,
+            'email' => $user->email,
+            'role' => $user->role,
+            'service_id' => $user->service ? $user->service->id : null,
+        ]);
     }
 
     /**
