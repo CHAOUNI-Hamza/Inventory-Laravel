@@ -28,12 +28,12 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        \App\Models\CategoryBdc::factory(5)->create();
-        \App\Models\Service::factory(10)->create();
-        \App\Models\User::factory(20)->create();
-        \App\Models\Category::factory(5)->create();
-        \App\Models\BonCommande::factory(10)->create();
-        \App\Models\Materiel::factory(50)->create();
-        \App\Models\Affectation::factory(30)->create();
+        //\App\Models\CategoryBdc::factory(5)->create();
+        //\App\Models\Service::factory(10)->create();
+        \App\Models\User::factory(1)->create();
+        //\App\Models\Category::factory(5)->create();
+        //\App\Models\BonCommande::factory(10)->create();
+        //\App\Models\Materiel::factory(50)->create();
+        //\App\Models\Affectation::factory(30)->create();
     }
 }
