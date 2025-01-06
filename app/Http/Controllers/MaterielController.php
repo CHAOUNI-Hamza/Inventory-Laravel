@@ -43,7 +43,7 @@ class MaterielController extends Controller
         $materiel->quantity = $request->input('quantity');
         $materiel->category_id = $request->input('category_id');
         $materiel->bon_commande_id = $request->input('bon_commande_id');
-        $materiel->stock = $request->input('stock');
+        //$materiel->stock = $request->input('stock');
         $materiel->num_inventaire = $request->input('num_inventaire');
 
         $materiel->save();
@@ -76,7 +76,7 @@ class MaterielController extends Controller
         $materiel->quantity = $request->input('quantity');
         $materiel->category_id = $request->input('category_id');
         $materiel->bon_commande_id = $request->input('bon_commande_id');
-        $materiel->stock = $request->input('stock');
+        //$materiel->stock = $request->input('stock');
         $materiel->num_inventaire = $request->input('num_inventaire');
 
         $materiel->save();

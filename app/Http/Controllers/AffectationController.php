@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Affectation;
+use App\Models\Materiel;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreAffectationRequest;
 use App\Http\Requests\UpdateAffectationRequest;
@@ -62,6 +63,17 @@ class AffectationController extends Controller
      */
     public function store(StoreAffectationRequest $request)
     {
+        // Récupérer le matériel correspondant
+        $materiel = Materiel::find($request->input('materiel_id'));
+        if (!$materiel) {
+            return response()->json(['message' => 'Matériel introuvable.'], 404);
+        }
+
+        // Vérifier si la quantité demandée est disponible
+        if ($request->input('quantity') > $materiel->quantity) {
+            return response()->json(['message' => 'Quantité insuffisante pour ce matériel.'], 400);
+        }
+
         $affectation = new Affectation();
 
         $affectation->materiel_id = $request->input('materiel_id');
@@ -71,6 +83,10 @@ class AffectationController extends Controller
         $affectation->date = $request->input('date');
 
         $affectation->save();
+
+        // Diminuer la quantité du matériel
+        $materiel->quantity -= $request->input('quantity');
+        $materiel->save();
 
         return new AffectationResource($affectation);
     }
@@ -96,6 +112,24 @@ class AffectationController extends Controller
     public function update(UpdateAffectationRequest $request, Affectation $affectation)
     {
 
+        // Récupérer le matériel lié à cette affectation
+    $materiel = Materiel::find($affectation->materiel_id);
+
+    if (!$materiel) {
+        return response()->json(['message' => 'Matériel introuvable.'], 404);
+    }
+
+    // Calculer la différence entre l'ancienne et la nouvelle quantité
+    $oldQuantity = $affectation->quantity;
+    $newQuantity = $request->input('quantity');
+    $quantityDifference = $newQuantity - $oldQuantity;
+
+    // Vérifier si l'ajustement est possible
+    if ($quantityDifference > 0 && $quantityDifference > $materiel->quantity) {
+        return response()->json(['message' => 'Quantité insuffisante pour ce matériel.'], 400);
+    }
+
+
         $affectation->materiel_id = $request->input('materiel_id');
         $affectation->service_id = $request->input('service_id');
         $affectation->assigned_by = $request->input('assigned_by');
@@ -103,6 +137,10 @@ class AffectationController extends Controller
         $affectation->date = $request->input('date');
 
         $affectation->save();
+
+        // Ajuster la quantité du matériel
+    $materiel->quantity -= $quantityDifference; // Soustraire ou ajouter selon la différence
+    $materiel->save();
 
         return new AffectationResource($affectation);
     }

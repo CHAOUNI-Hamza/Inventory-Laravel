@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignId('service_id')->constrained('services')->onDelete('cascade');
             $table->foreignId('assigned_by')->constrained('users')->onDelete('cascade');
             $table->integer('quantity');
-            $table->dateTime('date');  // Ajout du champ "date"
+            $table->date('date');  // Ajout du champ "date"
             $table->timestamps();
         });
     }

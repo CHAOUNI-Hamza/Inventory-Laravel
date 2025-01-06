@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('ref');  // Référence du bon de commande
             $table->foreignId('categorie_bdc_id')->constrained('category_bdcs');
-            $table->dateTime('date');  // Ajout du champ date
+            $table->date('date');  // Ajout du champ date
             $table->timestamps();
         });
     }
